@@ -1,0 +1,9 @@
+[github]
+repos = ["marketpay", "product-search-engine", "lsm-storage-engine"]
+
+[gmail]
+query = "in:inbox"
+hours = 24
+slices = 6
+latest = 6
+top_senders = 5
