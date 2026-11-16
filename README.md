@@ -105,7 +105,7 @@ From a `--verbose` run against my server on September 21, 2026:
 | GitHub repos | 3 | 2.2 to 3.1 s |
 | Gmail, 4 hour slices | 6 | 4.7 to 10.8 s |
 
-The six slices returned 5, 6, 4, 3, 2 and 5 mails, 25 in total, none needed splitting. The whole run took about 50 seconds. Zapier counts each call as one MCP task, so a default run is 10 tasks.
+The six slices returned 5, 6, 4, 3, 2 and 5 mails, 25 in total, none needed splitting. The whole run took about 50 seconds. Zapier bills two tasks per successful tool call and nothing for a failed one, so a default run with no splits is 10 calls and 20 tasks.
 
 ## Tests
 
@@ -113,7 +113,7 @@ The six slices returned 5, 6, 4, 3, 2 and 5 mails, 25 in total, none needed spli
 python -m pytest -q
 ```
 
-33 tests. They use a fake MCP session that returns real `mcp.types` objects, so the tool selection, the result parsing, the slice math, the split and retry path and the report formatting all run without a network. The fallback to the generic execute tool and the partial failure output are covered too.
+35 tests. They use a fake MCP session that returns real `mcp.types` objects, so the tool selection, the result parsing, the slice math, the split and retry path and the report formatting all run without a network. The fallback to the generic execute tool, the partial failure output and the unreachable server message are covered too.
 
 ## Layout
 

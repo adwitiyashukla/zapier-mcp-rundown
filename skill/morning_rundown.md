@@ -4,8 +4,8 @@ One ask that pulls from GitHub and Gmail and hands back one combined rundown: pr
 
 ## Validated fixed values
 
-- GitHub: selected_api GitHubCLIAPI, default connection 02b3dddf-f5d9-899c-ba56-205b1c61763d (account adwitiyashukla)
-- Gmail: selected_api GoogleMailV2CLIAPI, default connection 023fabf7-6a87-877d-a731-c2e30051131e (account adwitiyashukla9@gmail.com)
+- GitHub: selected_api GitHubCLIAPI, default connection set on the server (account adwitiyashukla)
+- Gmail: selected_api GoogleMailV2CLIAPI, default connection set on the server (the personal Gmail account connected there)
 - GitHub owner: adwitiyashukla (the connected account, so the owner param can stay empty)
 - Repos checked in detail: marketpay, product-search-engine, lsm-storage-engine
 - Gmail query: in:inbox (returns up to 100 newest inbox messages in one call, each with subject, from, date and labels)
@@ -36,7 +36,7 @@ One ask that pulls from GitHub and Gmail and hands back one combined rundown: pr
 
 ## Constraints
 
-- Do not re-resolve the connection ids or ask which account to use. The defaults above are correct.
+- Do not re-resolve the connections or ask which account to use. The defaults set on the server are correct.
 - Do not use New Email or any other trigger style read. Find Email with in:inbox is the read.
 - Do not add filters such as is:unread or newer_than to the Gmail query unless the user asks for them.
 - Do not print email bodies. Subject, sender and date only.

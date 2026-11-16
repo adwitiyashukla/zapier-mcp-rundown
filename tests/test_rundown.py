@@ -376,3 +376,23 @@ def test_main_requires_url(monkeypatch, capsys):
     monkeypatch.delenv("ZAPIER_MCP_URL", raising=False)
     assert rundown.main([]) == 2
     assert "ZAPIER_MCP_URL" in capsys.readouterr().err
+
+
+def test_root_cause_unwraps_nested_groups():
+    inner = ConnectionError("All connection attempts failed")
+    wrapped = ExceptionGroup("outer", [ExceptionGroup("inner", [inner])])
+    assert rundown.root_cause(wrapped) is inner
+    assert rundown.root_cause(inner) is inner
+
+
+def test_main_reports_unreachable_server_in_one_line(monkeypatch, capsys, tmp_path):
+    async def failing_fetch(url, token, cfg, log=None):
+        raise ExceptionGroup("boom", [ConnectionError("All connection attempts failed")])
+
+    monkeypatch.setenv("ZAPIER_MCP_URL", "http://127.0.0.1:1/mcp")
+    monkeypatch.setattr(rundown, "fetch", failing_fetch)
+    assert rundown.main(["--config", write_config(tmp_path, '[github]\nrepos = ["a"]\n')]) == 1
+    err = capsys.readouterr().err
+    assert err.count("\n") == 1
+    assert "could not reach the MCP server at http://127.0.0.1:1/mcp" in err
+    assert "ConnectionError: All connection attempts failed" in err

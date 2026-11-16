@@ -318,6 +318,12 @@ def log_to_stderr(message):
     print(message, file=sys.stderr, flush=True)
 
 
+def root_cause(exc):
+    while isinstance(exc, BaseExceptionGroup) and exc.exceptions:
+        exc = exc.exceptions[0]
+    return exc
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description="print a GitHub and Gmail rundown through Zapier MCP")
     default_config = os.path.join(os.path.dirname(os.path.abspath(__file__)), "config.toml")
@@ -334,7 +340,12 @@ def main(argv=None):
         sys.stdout.reconfigure(errors="replace")
     cfg = override_query(load_config(args.config), args.query)
     log = log_to_stderr if args.verbose else None
-    data, errors = asyncio.run(fetch(url, os.environ.get("ZAPIER_MCP_TOKEN"), cfg, log))
+    try:
+        data, errors = asyncio.run(fetch(url, os.environ.get("ZAPIER_MCP_TOKEN"), cfg, log))
+    except Exception as exc:
+        cause = root_cause(exc)
+        print(f"could not reach the MCP server at {url}: {type(cause).__name__}: {cause}", file=sys.stderr)
+        return 1
     print(build_report(data, cfg, datetime.now(), errors))
     return 1 if errors else 0
 
