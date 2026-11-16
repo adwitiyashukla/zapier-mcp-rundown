@@ -2,7 +2,7 @@
 
 A small Python CLI that connects to my own Zapier MCP server, reads my GitHub profile, three of my repos and my Gmail inbox, and prints one combined rundown. No Zap, no browser, one command.
 
-I built it while doing Zapier's MCP onboarding. The chat version of the same workflow is saved as a Zapier skill and lives in `skill/morning_rundown.md`. This repo is the script version, so the rundown runs from a terminal instead of a chat window.
+I built it while setting up Zapier MCP for the first time. The idea is simple: one command in the morning, one screen of what matters, pulled from two apps I already use.
 
 ## What it prints
 
@@ -122,7 +122,6 @@ rundown.py              the whole CLI
 config.toml             tunables
 requirements.txt        mcp and pytest
 tests/test_rundown.py   unit tests
-skill/morning_rundown.md  the chat version, saved on my Zapier MCP as a skill
 ```
 
 ## License
